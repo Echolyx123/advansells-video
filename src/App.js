@@ -152,10 +152,9 @@ const App = () => {
                       <img
                         src={brandLogoUrl}
                         alt="Advansells Brand"
-                        className="w-full h-full object-contain p-3"
+                        className="w-full h-full object-contain p-1 scale-110"
                       />
                     )}
-                    <div className="absolute bottom-0 w-full bg-[#00f2ff]/80 text-black text-[8px] font-bold text-center py-0.5 uppercase">Advansells Sync...</div>
                 </div>
 
                 <button className="relative z-10 w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
