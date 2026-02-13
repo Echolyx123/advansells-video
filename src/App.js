@@ -13,12 +13,33 @@ import {
   AlertCircle
 } from 'lucide-react';
 
+// Firebase Storage Imports
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { app } from "./firebase";
+
 // Import Playback Orchestrator
 import { playbackController } from './playbackController.js';
 
 const App = () => {
   const [view, setView] = useState('home'); // 'home' or 'video'
   const [scrolled, setScrolled] = useState(false);
+  const [brandLogoUrl, setBrandLogoUrl] = useState(null);
+
+  // --- BRAND LOGO RETRIEVAL ---
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const storage = getStorage(app);
+        const logoRef = ref(storage, "logos/Advansells-LOGO.png");
+        const url = await getDownloadURL(logoRef);
+        setBrandLogoUrl(url);
+      } catch (error) {
+        console.error("Brand logo retrieval failed:", error);
+      }
+    };
+
+    fetchLogo();
+  }, []);
 
   // --- ROUTING ORCHESTRATION ---
 
@@ -124,10 +145,19 @@ const App = () => {
                   <div className="w-2/3 h-4 bg-white/10 rounded" />
                   <div className="flex-1 w-full bg-white/5 rounded-lg border border-white/10" />
                 </div>
+                
+                {/* BRAND LOGO CIRCLE */}
                 <div className="absolute bottom-6 left-6 w-32 h-32 rounded-full border-2 border-[#00f2ff] bg-slate-800 flex items-center justify-center overflow-hidden shadow-2xl shadow-[#00f2ff]/20">
-                    <div className="text-[#00f2ff]"><Cpu size={48} /></div>
+                    {brandLogoUrl && (
+                      <img
+                        src={brandLogoUrl}
+                        alt="Advansells Brand"
+                        className="w-full h-full object-contain p-3"
+                      />
+                    )}
                     <div className="absolute bottom-0 w-full bg-[#00f2ff]/80 text-black text-[8px] font-bold text-center py-0.5 uppercase">Advansells Sync...</div>
                 </div>
+
                 <button className="relative z-10 w-16 h-16 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
                   <Play className="fill-current ml-1" size={24} />
                 </button>
